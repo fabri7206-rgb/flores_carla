@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>21 · 09 · 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --purple:#9b59ff;
+  --purple-dim:#6c3bbf;
+  --purple-glow:rgba(155,89,255,.28);
+  --green:#2ecc71;
+  --green-dim:#1a8a4a;
+  --gold:#ffd83a;
+  --gold-glow:rgba(255,216,58,.3);
+  --dark:#06060e;
+  --dark2:#0d0d1a;
+  --dark3:#13132a;
+}
+
+html,body{min-height:100%;background:var(--dark);color:white;font-family:'Inter',sans-serif;overflow-x:hidden;}
+
+/* STARS */
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.star{position:absolute;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite alternate;animation-delay:var(--dl,0s);}
+@keyframes twinkle{from{opacity:.07;transform:scale(.7);}to{opacity:.9;transform:scale(1.3);}}
+
+/* FxC CxF floating labels */
+.floatlabel{
+  position:fixed;pointer-events:none;z-index:0;
+  font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
+  animation:floatLabel var(--fl,18s) ease-in-out infinite alternate;
+  opacity:.09;
+  color:var(--purple);
+  user-select:none;
+}
+@keyframes floatLabel{
+  0%{transform:translateY(0) rotate(var(--rot,0deg));}
+  100%{transform:translateY(-18px) rotate(var(--rot,0deg));}
+}
+
+/* SCREENS */
+.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;}
+
+/* ── LOCK ── */
+#lock-screen{flex-direction:column;gap:28px;padding:24px;}
+
+.lock-brand{
+  font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
+  font-size:clamp(36px,10vw,58px);
+  background:linear-gradient(135deg,var(--purple),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:.06em;text-align:center;
+  filter:drop-shadow(0 0 20px rgba(155,89,255,.4));
+}
+.lock-date{
+  font-size:13px;letter-spacing:.18em;
+  color:rgba(255,255,255,.28);font-style:italic;text-align:center;
+  font-family:'Playfair Display',serif;
+}
+.lock-hint-top{
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.22);text-align:center;font-weight:300;
+}
+.code-row{display:flex;gap:9px;justify-content:center;}
+.code-box{
+  width:46px;height:58px;
+  border:1.5px solid rgba(155,89,255,.25);
+  border-radius:12px;background:rgba(155,89,255,.07);
+  color:var(--purple);font-family:'Playfair Display',serif;
+  font-size:26px;font-weight:700;text-align:center;
+  outline:none;caret-color:var(--purple);
+  transition:border-color .2s,background .2s,box-shadow .2s;
+}
+.code-box:focus{border-color:rgba(155,89,255,.7);background:rgba(155,89,255,.13);box-shadow:0 0 0 3px rgba(155,89,255,.12);}
+.code-box.correct{border-color:var(--green);color:var(--green);}
+.code-box.wrong{border-color:#ff5d5d;color:#ff5d5d;animation:shake .45s;}
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-7px);}60%{transform:translateX(7px);}}
+
+#lock-msg{font-size:12px;color:rgba(255,255,255,.25);font-style:italic;text-align:center;min-height:18px;transition:color .3s;}
+#lock-msg.err{color:#ff7070;}
+#lock-msg.ok{color:var(--green);}
+
+/* ── MAIN ── */
+#main-screen{display:none;flex-direction:column;align-items:center;padding:40px 20px 70px;gap:0;}
+#main-screen.show{display:flex;animation:fadeUp 1.1s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+
+/* HEADER */
+.main-header{text-align:center;margin-bottom:20px;}
+.main-date{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;letter-spacing:.2em;color:rgba(255,255,255,.3);margin-bottom:8px;}
+.main-brand{
+  font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
+  font-size:clamp(40px,11vw,70px);letter-spacing:.1em;line-height:1;
+  background:linear-gradient(135deg,var(--purple) 30%,var(--green) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(155,89,255,.45));
+}
+
+/* BOUQUET */
+#bouquet-wrap{width:min(400px,94vw);margin:0 auto 10px;filter:drop-shadow(0 0 35px rgba(255,216,58,.18));}
+#bouquet-wrap svg{width:100%;height:auto;}
+
+@keyframes sway1{0%,100%{transform:rotate(-2.2deg);}50%{transform:rotate(2deg);}}
+@keyframes sway2{0%,100%{transform:rotate(1.8deg);}50%{transform:rotate(-1.8deg);}}
+@keyframes sway3{0%,100%{transform:rotate(-1.2deg);}50%{transform:rotate(2.8deg);}}
+@keyframes pulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.3) drop-shadow(0 0 10px #ffd83a);}}
+.sw1{animation:sway1 3.8s ease-in-out infinite;transform-origin:50% 100%;}
+.sw2{animation:sway2 4.3s ease-in-out infinite;transform-origin:50% 100%;}
+.sw3{animation:sway3 3.5s ease-in-out infinite;transform-origin:50% 100%;}
+.glow{animation:pulse 3s ease-in-out infinite;}
+
+/* INLINE FxC labels on bouquet area */
+.bouquet-labels{
+  display:flex;justify-content:space-between;align-items:center;
+  width:min(400px,94vw);margin-bottom:12px;padding:0 8px;
+}
+.blabel{
+  font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
+  font-size:22px;
+  background:linear-gradient(135deg,var(--purple),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  opacity:.75;letter-spacing:.05em;
+}
+
+/* IMAGES */
+.section-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;font-weight:400;color:rgba(255,255,255,.22);margin-bottom:14px;text-align:center;}
+
+.images-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:min(480px,96vw);margin-bottom:12px;}
+
+/* Instrucción nombres de archivos */
+.img-names-note{
+  width:min(480px,96vw);margin-bottom:28px;
+  background:rgba(155,89,255,.07);
+  border:1px solid rgba(155,89,255,.2);
+  border-radius:14px;padding:16px 18px;
+}
+.img-names-note p{font-size:11px;color:rgba(255,255,255,.38);letter-spacing:.04em;line-height:1.6;margin-bottom:8px;}
+.img-names-note ul{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.img-names-note li{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:13px;color:var(--purple);letter-spacing:.03em;
+  display:flex;align-items:center;gap:8px;
+}
+.img-names-note li::before{content:'→';color:var(--green);font-style:normal;font-family:'Inter',sans-serif;}
+
+.img-slot{
+  aspect-ratio:1;border-radius:14px;
+  border:1.5px dashed rgba(155,89,255,.3);
+  background:rgba(155,89,255,.05);
+  cursor:pointer;overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .2s,background .2s;
+}
+.img-slot:hover{border-color:rgba(155,89,255,.6);background:rgba(155,89,255,.1);}
+.img-slot input[type="file"]{display:none;}
+.img-placeholder{display:flex;flex-direction:column;align-items:center;gap:7px;pointer-events:none;}
+.img-placeholder svg{opacity:.35;}
+.img-placeholder span{font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.06em;}
+.img-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:13px;transition:transform .3s;}
+.img-slot:hover img{transform:scale(1.04);}
+
+/* FxC stripe between images and dedication */
+.stripe{
+  width:min(480px,96vw);margin:4px 0 28px;
+  display:flex;justify-content:center;align-items:center;gap:16px;
+  opacity:.5;
+}
+.stripe-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--purple),transparent);}
+.stripe-text{
+  font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
+  font-size:15px;
+  background:linear-gradient(135deg,var(--purple),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:.08em;white-space:nowrap;
+}
+
+/* DEDICATION */
+.dedication-wrap{width:min(480px,96vw);margin-bottom:36px;}
+.dedication-box{
+  background:rgba(155,89,255,.06);
+  border:1px solid rgba(155,89,255,.22);
+  border-radius:18px;padding:26px 22px 18px;
+  position:relative;
+}
+.dedication-box::before{
+  content:'\201C';font-family:'Playfair Display',serif;font-size:90px;line-height:1;
+  color:rgba(155,89,255,.15);position:absolute;top:2px;left:12px;pointer-events:none;
+}
+.dedication-text{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:16px;line-height:1.8;color:rgba(255,255,255,.85);
+  width:100%;min-height:120px;background:transparent;
+  border:none;outline:none;resize:none;caret-color:var(--purple);
+  padding-left:36px;
+}
+.dedication-text::placeholder{color:rgba(255,255,255,.18);}
+.dedication-from{margin-top:10px;text-align:right;}
+.dedication-from input{
+  font-family:'Playfair Display',serif;font-style:italic;font-size:14px;
+  color:rgba(155,89,255,.8);background:transparent;border:none;
+  border-bottom:1px solid rgba(155,89,255,.22);outline:none;
+  text-align:right;width:220px;padding:4px 2px;caret-color:var(--purple);
+}
+.dedication-from input::placeholder{color:rgba(255,255,255,.18);}
+.dedication-from input:focus{border-bottom-color:rgba(155,89,255,.55);}
+
+/* FOOTER */
+.footer-row{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.footer-date{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(16px,4.5vw,26px);color:rgba(155,89,255,.5);letter-spacing:.14em;}
+.footer-brand{
+  font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
+  font-size:clamp(22px,6vw,38px);letter-spacing:.1em;
+  background:linear-gradient(135deg,var(--purple),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 16px rgba(155,89,255,.35));
+}
+
+/* PETALS */
+.petal{position:fixed;pointer-events:none;z-index:20;font-size:15px;animation:floatUp var(--fd,7s) ease-in infinite;opacity:0;left:var(--fx,50%);bottom:-30px;}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) rotate(0);}8%{opacity:.85;}92%{opacity:.6;}100%{opacity:0;transform:translateY(-108vh) rotate(660deg);}}
+
+@media(max-width:380px){.code-box{width:40px;height:50px;font-size:22px;}.images-grid{gap:7px;}}
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<!-- FLOATING LABELS (background deco) -->
+<div class="floatlabel" style="font-size:120px;top:5%;left:-2%;--fl:22s;--rot:-12deg;opacity:.06;">FxC</div>
+<div class="floatlabel" style="font-size:80px;top:18%;right:2%;--fl:17s;--rot:8deg;color:var(--green);">CxF</div>
+<div class="floatlabel" style="font-size:60px;top:45%;left:3%;--fl:25s;--rot:-5deg;color:var(--green);opacity:.07;">FxC</div>
+<div class="floatlabel" style="font-size:90px;top:65%;right:-1%;--fl:19s;--rot:15deg;opacity:.06;">CxF</div>
+<div class="floatlabel" style="font-size:50px;top:80%;left:10%;--fl:21s;--rot:-8deg;opacity:.05;">FxC</div>
+<div class="floatlabel" style="font-size:70px;top:90%;right:8%;--fl:24s;--rot:6deg;color:var(--green);opacity:.06;">CxF</div>
+<div class="floatlabel" style="font-size:40px;top:30%;left:50%;--fl:20s;--rot:3deg;opacity:.05;">CxF</div>
+<div class="floatlabel" style="font-size:55px;top:55%;right:20%;--fl:23s;--rot:-10deg;color:var(--green);opacity:.06;">FxC</div>
+<div class="floatlabel" style="font-size:35px;top:10%;left:35%;--fl:16s;--rot:7deg;opacity:.05;">CxF</div>
+<div class="floatlabel" style="font-size:45px;top:72%;left:28%;--fl:27s;--rot:-4deg;color:var(--green);opacity:.05;">FxC</div>
+<div class="floatlabel" style="font-size:30px;top:38%;right:6%;--fl:18s;--rot:12deg;opacity:.06;">CxF</div>
+
+<!-- ══ LOCK ══ -->
+<div class="screen" id="lock-screen">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:26px;width:100%;max-width:380px;padding:24px;">
+    <div class="lock-brand">FxC</div>
+    <div class="lock-date">21 · 09 · 2026</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:15px;letter-spacing:.15em;color:rgba(155,89,255,.55);text-align:center;margin-top:-10px;">para Carla 💜</div>
+    <div class="lock-hint-top">ingresa el código secreto</div>
+    <div class="code-row">
+      <input class="code-box" maxlength="1" inputmode="numeric" autocomplete="off" type="text"/>
+      <input class="code-box" maxlength="1" inputmode="numeric" autocomplete="off" type="text"/>
+      <input class="code-box" maxlength="1" inputmode="numeric" autocomplete="off" type="text"/>
+      <input class="code-box" maxlength="1" inputmode="numeric" autocomplete="off" type="text"/>
+      <input class="code-box" maxlength="1" inputmode="numeric" autocomplete="off" type="text"/>
+      <input class="code-box" maxlength="1" inputmode="numeric" autocomplete="off" type="text"/>
+    </div>
+    <div id="lock-msg">✦ seis dígitos</div>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div id="main-screen">
+
+  <div class="main-header">
+    <div class="main-date">21 · 09 · 2026</div>
+    <div class="main-brand">FxC &amp; CxF</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px;letter-spacing:.18em;color:rgba(155,89,255,.5);margin-top:6px;">para Carla, con todo 💜</div>
+  </div>
+
+  <!-- Bouquet SVG -->
+  <div id="bouquet-wrap">
+    <svg viewBox="0 0 420 450" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bgG" cx="50%" cy="60%" r="50%">
+          <stop offset="0%" stop-color="#ffd83a" stop-opacity=".1"/>
+          <stop offset="100%" stop-color="#ffd83a" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="ctrG" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#9a5200"/>
+          <stop offset="100%" stop-color="#5c3000"/>
+        </radialGradient>
+        <radialGradient id="petG" cx="50%" cy="28%" r="65%">
+          <stop offset="0%" stop-color="#ffe87a"/>
+          <stop offset="55%" stop-color="#ffd020"/>
+          <stop offset="100%" stop-color="#d49800"/>
+        </radialGradient>
+        <radialGradient id="petG2" cx="50%" cy="28%" r="65%">
+          <stop offset="0%" stop-color="#fff3b0"/>
+          <stop offset="55%" stop-color="#ffd83a"/>
+          <stop offset="100%" stop-color="#e8b000"/>
+        </radialGradient>
+        <radialGradient id="lfG" cx="30%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#62c14f"/>
+          <stop offset="100%" stop-color="#2a6a18"/>
+        </radialGradient>
+        <!-- Purple ribbon gradient -->
+        <linearGradient id="ribbonG" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#6c3bbf"/>
+          <stop offset="50%" stop-color="#9b59ff"/>
+          <stop offset="100%" stop-color="#6c3bbf"/>
+        </linearGradient>
+      </defs>
+
+      <ellipse cx="210" cy="295" rx="175" ry="125" fill="url(#bgG)"/>
+
+      <!-- STEMS -->
+      <path d="M210 445 Q208 388 205 342 Q202 305 206 283" stroke="#3a7a28" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <path d="M168 445 Q165 390 160 348 Q155 310 164 283 Q172 264 180 250" stroke="#3a7a28" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M252 445 Q255 390 260 348 Q265 310 256 283 Q248 264 240 250" stroke="#3a7a28" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M128 445 Q124 388 116 334 Q107 290 118 262 Q128 243 140 228" stroke="#3a7a28" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <path d="M292 445 Q296 388 304 334 Q313 290 302 262 Q292 243 280 228" stroke="#3a7a28" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+      <!-- LEAVES -->
+      <g class="sw2"><ellipse cx="185" cy="340" rx="26" ry="11" fill="url(#lfG)" transform="rotate(-38 185 340)"/></g>
+      <g class="sw3"><ellipse cx="237" cy="342" rx="26" ry="11" fill="url(#lfG)" transform="rotate(38 237 342)"/></g>
+      <g class="sw1"><ellipse cx="142" cy="362" rx="23" ry="10" fill="url(#lfG)" transform="rotate(-42 142 362)"/></g>
+      <g class="sw2"><ellipse cx="278" cy="364" rx="23" ry="10" fill="url(#lfG)" transform="rotate(42 278 364)"/></g>
+      <ellipse cx="172" cy="388" rx="20" ry="9" fill="#2a6a18" opacity=".68" transform="rotate(-32 172 388)"/>
+      <ellipse cx="248" cy="390" rx="20" ry="9" fill="#2a6a18" opacity=".68" transform="rotate(32 248 390)"/>
+
+      <!-- PURPLE RIBBON -->
+      <path d="M155 428 Q178 412 210 414 Q242 412 265 428 Q242 444 210 442 Q178 444 155 428Z" fill="url(#ribbonG)" opacity=".92"/>
+      <ellipse cx="210" cy="427" rx="14" ry="10" fill="#9b59ff"/>
+      <path d="M198 424 Q182 406 162 412 Q176 425 197 428Z" fill="#7a3aff" opacity=".88"/>
+      <path d="M222 424 Q238 406 258 412 Q244 425 223 428Z" fill="#7a3aff" opacity=".88"/>
+      <ellipse cx="204" cy="423" rx="6" ry="3" fill="white" opacity=".2"/>
+      <!-- FxC on ribbon -->
+      <text x="210" y="433" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="11" fill="white" opacity=".85">FxC</text>
+
+      <!-- FLOWER CENTER -->
+      <g class="sw1 glow" style="transform-origin:206px 283px">
+        <g transform="translate(206,283)">
+          <ellipse rx="14" ry="38" fill="url(#petG)" transform="rotate(0)   translate(0,-30)"/>
+          <ellipse rx="14" ry="38" fill="url(#petG)" transform="rotate(45)  translate(0,-30)"/>
+          <ellipse rx="14" ry="38" fill="url(#petG)" transform="rotate(90)  translate(0,-30)"/>
+          <ellipse rx="14" ry="38" fill="url(#petG)" transform="rotate(135) translate(0,-30)"/>
+          <ellipse rx="14" ry="38" fill="url(#petG)" transform="rotate(180) translate(0,-30)"/>
+          <ellipse rx="14" ry="38" fill="url(#petG)" transform="rotate(225) translate(0,-30)"/>
+          <ellipse rx="14" ry="38" fill="url(#petG)" transform="rotate(270) translate(0,-30)"/>
+          <ellipse rx="14" ry="38" fill="url(#petG)" transform="rotate(315) translate(0,-30)"/>
+          <ellipse rx="11" ry="28" fill="url(#petG2)" transform="rotate(22)  translate(0,-24)"/>
+          <ellipse rx="11" ry="28" fill="url(#petG2)" transform="rotate(67)  translate(0,-24)"/>
+          <ellipse rx="11" ry="28" fill="url(#petG2)" transform="rotate(112) translate(0,-24)"/>
+          <ellipse rx="11" ry="28" fill="url(#petG2)" transform="rotate(157) translate(0,-24)"/>
+          <ellipse rx="11" ry="28" fill="url(#petG2)" transform="rotate(202) translate(0,-24)"/>
+          <ellipse rx="11" ry="28" fill="url(#petG2)" transform="rotate(247) translate(0,-24)"/>
+          <ellipse rx="11" ry="28" fill="url(#petG2)" transform="rotate(292) translate(0,-24)"/>
+          <ellipse rx="11" ry="28" fill="url(#petG2)" transform="rotate(337) translate(0,-24)"/>
+          <circle r="20" fill="url(#ctrG)"/>
+          <circle r="15" fill="#6a3500" opacity=".55"/>
+          <circle r="6" cx="-4" cy="-5" fill="white" opacity=".11"/>
+        </g>
+      </g>
+
+      <!-- FLOWER LEFT -->
+      <g class="sw2 glow" style="transform-origin:162px 258px;animation-delay:-1.4s">
+        <g transform="translate(162,258) scale(.84)">
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(0)   translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(45)  translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(90)  translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(135) translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(180) translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(225) translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(270) translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(315) translate(0,-28)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(22)  translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(67)  translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(112) translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(157) translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(202) translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(247) translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(292) translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(337) translate(0,-22)"/>
+          <circle r="18" fill="url(#ctrG)"/>
+          <circle r="13" fill="#6a3500" opacity=".5"/>
+        </g>
+      </g>
+
+      <!-- FLOWER RIGHT -->
+      <g class="sw3 glow" style="transform-origin:250px 257px;animation-delay:-.75s">
+        <g transform="translate(250,257) scale(.84)">
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(15)  translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(60)  translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(105) translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(150) translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(195) translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(240) translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(285) translate(0,-28)"/>
+          <ellipse rx="13" ry="36" fill="url(#petG)" transform="rotate(330) translate(0,-28)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(37)  translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(82)  translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(127) translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(172) translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(217) translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(262) translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(307) translate(0,-22)"/>
+          <ellipse rx="10" ry="26" fill="url(#petG2)" transform="rotate(352) translate(0,-22)"/>
+          <circle r="18" fill="url(#ctrG)"/>
+          <circle r="13" fill="#6a3500" opacity=".5"/>
+        </g>
+      </g>
+
+      <!-- FLOWER BACK LEFT -->
+      <g class="sw1 glow" style="transform-origin:133px 233px;animation-delay:-2.1s;opacity:.82">
+        <g transform="translate(133,233) scale(.7)">
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(0)   translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(45)  translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(90)  translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(135) translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(180) translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(225) translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(270) translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(315) translate(0,-26)"/>
+          <circle r="16" fill="url(#ctrG)"/>
+          <circle r="12" fill="#6a3500" opacity=".48"/>
+        </g>
+      </g>
+
+      <!-- FLOWER BACK RIGHT -->
+      <g class="sw2 glow" style="transform-origin:287px 231px;animation-delay:-.42s;opacity:.82">
+        <g transform="translate(287,231) scale(.7)">
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(22)  translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(67)  translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(112) translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(157) translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(202) translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(247) translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(292) translate(0,-26)"/>
+          <ellipse rx="12" ry="32" fill="url(#petG)" transform="rotate(337) translate(0,-26)"/>
+          <circle r="16" fill="url(#ctrG)"/>
+          <circle r="12" fill="#6a3500" opacity=".48"/>
+        </g>
+      </g>
+
+      <!-- FxC / CxF labels inside SVG -->
+      <text x="52" y="200" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="18" fill="#9b59ff" opacity=".55" transform="rotate(-20 52 200)">CxF</text>
+      <text x="340" y="195" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="18" fill="#2ecc71" opacity=".55" transform="rotate(18 340 195)">FxC</text>
+      <text x="80" y="400" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="14" fill="#9b59ff" opacity=".45" transform="rotate(-8 80 400)">FxC</text>
+      <text x="318" y="405" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="14" fill="#2ecc71" opacity=".45" transform="rotate(10 318 405)">CxF</text>
+      <text x="185" y="140" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="13" fill="#9b59ff" opacity=".4" transform="rotate(-5 185 140)">FxC</text>
+      <text x="230" y="132" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="12" fill="#2ecc71" opacity=".38" transform="rotate(8 230 132)">CxF</text>
+    </svg>
+  </div>
+
+  <!-- mini FxC CxF row -->
+  <div class="bouquet-labels">
+    <span class="blabel">FxC</span>
+    <span class="blabel" style="font-size:13px;opacity:.35;">✦ Carla ✦</span>
+    <span class="blabel">CxF</span>
+  </div>
+
+  <!-- IMAGES -->
+  <div class="section-label">nuestros momentos</div>
+  <div class="images-grid">
+    <div class="img-slot" id="s0" onclick="document.getElementById('f0').click()">
+      <input type="file" id="f0" accept="image/*" onchange="loadImg(0,this)"/>
+      <div class="img-placeholder">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(155,89,255,.7)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <span>foto1.jpg</span>
+      </div>
+    </div>
+    <div class="img-slot" id="s1" onclick="document.getElementById('f1').click()">
+      <input type="file" id="f1" accept="image/*" onchange="loadImg(1,this)"/>
+      <div class="img-placeholder">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(155,89,255,.7)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <span>foto2.jpg</span>
+      </div>
+    </div>
+    <div class="img-slot" id="s2" onclick="document.getElementById('f2').click()">
+      <input type="file" id="f2" accept="image/*" onchange="loadImg(2,this)"/>
+      <div class="img-placeholder">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(155,89,255,.7)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <span>foto3.jpg</span>
+      </div>
+    </div>
+    <div class="img-slot" id="s3" onclick="document.getElementById('f3').click()">
+      <input type="file" id="f3" accept="image/*" onchange="loadImg(3,this)"/>
+      <div class="img-placeholder">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(155,89,255,.7)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <span>foto4.jpg</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAMES NOTE -->
+  <div class="img-names-note">
+    <p>📁 Para subir al repositorio de GitHub, coloca las fotos en la <strong>misma carpeta</strong> que <code>index.html</code> con estos nombres exactos:</p>
+    <ul>
+      <li>foto1.jpg</li>
+      <li>foto2.jpg</li>
+      <li>foto3.jpg</li>
+      <li>foto4.jpg</li>
+    </ul>
+    <p style="margin-top:10px;font-size:10px;color:rgba(255,255,255,.22);">✦ En GitHub: sube el <code>index.html</code> + las 4 fotos a la misma carpeta del repositorio. Activa GitHub Pages en Settings → Pages → Branch: main → / (root).</p>
+    <p style="margin-top:6px;font-size:10px;color:rgba(255,255,255,.22);">✦ También puedes tocar cada cuadro para carglarlas manualmente desde tu dispositivo.</p>
+  </div>
+
+  <!-- STRIPE TOP -->
+  <div class="stripe">
+    <div class="stripe-line"></div>
+    <span class="stripe-text">CxF &nbsp;💜&nbsp; FxC</span>
+    <div class="stripe-line"></div>
+  </div>
+
+  <!-- STRIPE MIDDLE (extra) -->
+  <div class="stripe" style="opacity:.35;margin:0 0 14px;">
+    <span class="stripe-text" style="font-size:12px;letter-spacing:.12em;">FxC &nbsp;✦&nbsp; para siempre &nbsp;✦&nbsp; CxF</span>
+  </div>
+
+  <!-- DEDICATION (pre-filled beautiful message) -->
+  <div class="section-label">dedicatoria</div>
+  <div class="dedication-wrap">
+    <div class="dedication-box">
+      <textarea class="dedication-text" rows="6">Carla, hay personas que llegan a tu vida y la iluminan para siempre, como un ramo de flores que nunca se marchita. Tú eres esa persona para mí. Cada risa contigo, cada mirada, cada silencio compartido... todo tiene un color especial cuando estás tú. Gracias por existir, por elegirme, por ser exactamente quien eres. Te llevo en cada latido. FxC 💜✨</textarea>
+      <div class="dedication-from">
+        <input type="text" value="— para Carla, con todo mi amor 💜"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- STRIPE BEFORE FOOTER -->
+  <div class="stripe" style="opacity:.4;margin-bottom:20px;">
+    <div class="stripe-line"></div>
+    <span class="stripe-text" style="font-size:13px;">FxC &nbsp;✦&nbsp; CxF</span>
+    <div class="stripe-line"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-row">
+    <div class="footer-date">21 · 09 · 2026</div>
+    <div class="footer-brand">FxC &amp; CxF</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:13px;letter-spacing:.15em;color:rgba(155,89,255,.45);margin-top:4px;">para Carla 💜 para siempre</div>
+  </div>
+
+</div>
+
+<script>
+/* STARS */
+(function(){
+  const c=document.getElementById('stars');
+  const purples=['rgba(155,89,255,',  'rgba(46,204,113,', 'rgba(255,255,255,'];
+  for(let i=0;i<100;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    const sz=(Math.random()*2.2+.4).toFixed(1);
+    const col=purples[Math.floor(Math.random()*purples.length)];
+    const op=(Math.random()*.5+.3).toFixed(2);
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;background:${col}${op});--d:${(Math.random()*3.2+1.4).toFixed(1)}s;--dl:${(Math.random()*5).toFixed(1)}s;`;
+    c.appendChild(s);
+  }
+})();
+
+/* LOCK */
+const SECRET='200405';
+const boxes=Array.from(document.querySelectorAll('.code-box'));
+const hint=document.getElementById('lock-msg');
+boxes[0].focus();
+
+boxes.forEach((box,i)=>{
+  box.addEventListener('keydown',e=>{
+    if(e.key==='Backspace'){box.value='';if(i>0)boxes[i-1].focus();}
+  });
+  box.addEventListener('input',()=>{
+    const v=box.value.replace(/\D/g,'');
+    box.value=v.slice(-1);
+    if(box.value){if(i<5)boxes[i+1].focus();else check();}
+  });
+  box.addEventListener('paste',e=>{
+    e.preventDefault();
+    const t=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'');
+    t.slice(0,6).split('').forEach((ch,idx)=>{if(boxes[idx])boxes[idx].value=ch;});
+    boxes[Math.min(t.length,5)].focus();
+    if(t.length>=6)check();
+  });
+});
+
+function check(){
+  const entered=boxes.map(b=>b.value).join('');
+  if(entered===SECRET){
+    boxes.forEach(b=>{b.classList.add('correct');b.disabled=true;});
+    hint.textContent='✦ bienvenida ✦';hint.classList.add('ok');
+    setTimeout(openMain,700);
+  } else {
+    boxes.forEach(b=>b.classList.add('wrong'));
+    hint.textContent='código incorrecto — intenta de nuevo';hint.classList.add('err');
+    setTimeout(()=>{
+      boxes.forEach(b=>{b.value='';b.classList.remove('wrong');});
+      hint.textContent='✦ seis dígitos';hint.classList.remove('err');
+      boxes[0].focus();
+    },900);
+  }
+}
+
+function openMain(){
+  document.getElementById('lock-screen').style.display='none';
+  const m=document.getElementById('main-screen');
+  m.classList.add('show');
+  tryAutoLoad();
+  petals();
+}
+
+/* AUTO-LOAD images from same folder */
+function tryAutoLoad(){
+  ['foto1.jpg','foto2.jpg','foto3.jpg','foto4.jpg'].forEach((name,i)=>{
+    const img=new Image();
+    img.onload=()=>{
+      const slot=document.getElementById('s'+i);
+      const ph=slot.querySelector('.img-placeholder');
+      if(ph)ph.style.display='none';
+      let el=slot.querySelector('img');
+      if(!el){el=document.createElement('img');slot.appendChild(el);}
+      el.src=name;
+    };
+    img.src=name;
+  });
+}
+
+/* MANUAL upload */
+function loadImg(idx,input){
+  if(!input.files||!input.files[0])return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const slot=document.getElementById('s'+idx);
+    const ph=slot.querySelector('.img-placeholder');
+    if(ph)ph.style.display='none';
+    let img=slot.querySelector('img');
+    if(!img){img=document.createElement('img');slot.appendChild(img);}
+    img.src=e.target.result;
+  };
+  r.readAsDataURL(input.files[0]);
+}
+
+/* PETALS */
+function petals(){
+  const icons=['🌸','✨','💜','🌟','🌿','💛','🌼'];
+  function spawn(){
+    const p=document.createElement('div');
+    p.className='petal';
+    p.textContent=icons[Math.floor(Math.random()*icons.length)];
+    const dur=(Math.random()*4+5).toFixed(1);
+    p.style.cssText=`--fd:${dur}s;--fx:${(Math.random()*100).toFixed(1)}vw;animation-delay:${(Math.random()*2).toFixed(1)}s`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),(parseFloat(dur)+3)*1000);
+  }
+  for(let i=0;i<14;i++)setTimeout(spawn,i*260);
+  setInterval(spawn,2000);
+}
+</script>
+</body>
+</html>
